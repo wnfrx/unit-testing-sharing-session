@@ -38,7 +38,7 @@ jobs:
         strategy:
             matrix:
                 go-version: [1.17]
-                mockgen-version: [1.6.0]
+                mockgen-version: [v1.6.0]
         steps:
             - name: Set up Go ${{ matrix.go-version }}
               uses: actions/setup-go@v2

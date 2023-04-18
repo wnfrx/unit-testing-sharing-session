@@ -1,0 +1,81 @@
+name: Generate Mocks
+
+on:
+    push:
+        branches:
+            - feature/**
+            - enhance/**
+        paths:
+            - '2-clean-architecture/service/usecase.go'
+            - '2-clean-architecture/service/repository.go'
+            - '2-clean-architecture/service/usecase/mocks/*.go'
+            - '2-clean-architecture/service/repository/mocks/*.go'
+            - '2-clean-architecture/go.mod'
+
+    pull_request:
+        branches:
+            - master
+            - main
+            - sandbox
+            - staging
+            - temp/**
+        paths:
+            - '2-clean-architecture/service/usecase.go'
+            - '2-clean-architecture/service/repository.go'
+            - '2-clean-architecture/service/usecase/mocks/*.go'
+            - '2-clean-architecture/service/repository/mocks/*.go'
+            - '2-clean-architecture/go.mod'
+
+jobs:
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                go-version: [1.17]
+                mockgen-version: [1.6.0]
+        steps:
+            - name: Set up Go ${{ matrix.go-version }}
+              uses: actions/setup-go@v2
+              with:
+                go-version: ${{ matrix.go-version }}
+
+            - name: Checkout code
+              uses: actions/checkout@v2
+              with:
+                ref: ${{ github.head_ref }}
+
+            - name: Install mockgen
+              run: go install github.com/golang/mock/mockgen@${{ matrix.mockgen-version }}
+
+            - name: Generate mocks
+              id: generate-mocks
+              run: |
+                cd 2-clean-architecture
+
+                if [ ! -z "${{ github.head_ref }}" ]; then
+                    echo ::set-output name=branch::${{ github.head_ref }}
+                else
+                    echo ::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})
+                fi
+
+                make generate-mocks
+
+                cd ..
+
+                echo ::set-output name=is-changed::false
+                if [ ! -z "$(git status -s -- 2-clean-architecture/service/**/mocks/*.go)" ]; then
+                    git config --local user.email "action@github.com"
+                    git config --local user.name "GitHub Action"
+
+                    git add -- 2-clean-architecture/service/**/mocks/*.go
+                    git commit -m ""
+                    echo ::set-output name=is-changed::true
+                fi
+
+            - name: Push changes
+              if: steps.generate-mocks.outputs.is-changed != 'false'
+              uses: ad-m/github-push-action@master
+              with:
+                branch: ${{ steps.generate-mocks.outputs.branch }}
+                github_token: ${{ secrets.GITHUB_TOKEN }}

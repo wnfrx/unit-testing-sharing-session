@@ -79,6 +79,21 @@ func (mr *MockPostRepositoryMockRecorder) Get(arg0, arg1 interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockPostRepository)(nil).Get), arg0, arg1)
 }
 
+// GetByAuthor mocks base method.
+func (m *MockPostRepository) GetByAuthor(arg0 context.Context, arg1 string) (models.Post, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetByAuthor", arg0, arg1)
+	ret0, _ := ret[0].(models.Post)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetByAuthor indicates an expected call of GetByAuthor.
+func (mr *MockPostRepositoryMockRecorder) GetByAuthor(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByAuthor", reflect.TypeOf((*MockPostRepository)(nil).GetByAuthor), arg0, arg1)
+}
+
 // Update mocks base method.
 func (m *MockPostRepository) Update(arg0 context.Context, arg1 models.Post) error {
 	m.ctrl.T.Helper()

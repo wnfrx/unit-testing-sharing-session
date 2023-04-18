@@ -11,4 +11,8 @@ type PostRepository interface {
 	Get(ctx context.Context, id int64) (result models.Post, err error)
 	Update(ctx context.Context, args models.Post) (err error)
 	Delete(ctx context.Context, id int64) (err error)
+
+	GetByAuthor(ctx context.Context, author string) (result models.Post, err error)
 }
+
+type UserRepository interface{}

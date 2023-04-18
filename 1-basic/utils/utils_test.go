@@ -44,14 +44,16 @@ func TestMax_GreaterB(t *testing.T) {
 }
 
 func TestMax(t *testing.T) {
-	var testTable = []struct {
+	type testCase struct {
 		name  string
 		input struct {
 			A int
 			B int
 		}
 		expected int
-	}{
+	}
+
+	var testTable = []testCase{
 		{
 			name: "a < b",
 			input: struct {
@@ -61,7 +63,7 @@ func TestMax(t *testing.T) {
 			expected: 10,
 		},
 		{
-			name: "a < b",
+			name: "a > b",
 			input: struct {
 				A int
 				B int

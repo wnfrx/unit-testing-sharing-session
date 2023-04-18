@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"errors"
 	"log"
 
 	"github.com/wnfrx/unit-testing-sharing-session/2-clean-architecture/models"
@@ -19,6 +20,11 @@ func NewPostUsecase(repo service.PostRepository) service.PostUsecase {
 func (u *postUsecase) Add(ctx context.Context, args models.Post) (id int64, err error) {
 	if args.Title == "" {
 		err = models.ErrPostTitleEmpty
+		return
+	}
+
+	if args.Author == "" {
+		err = errors.New("post author is empty")
 		return
 	}
 
@@ -70,6 +76,11 @@ func (u *postUsecase) Delete(ctx context.Context, id int64) (err error) {
 		log.Println(err)
 		return
 	}
+
+	return
+}
+
+func (u *postUsecase) GetByAuthor(ctx context.Context, author string) (result models.Post, err error) {
 
 	return
 }

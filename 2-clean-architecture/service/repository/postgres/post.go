@@ -36,3 +36,8 @@ func (u *postRepository) Delete(ctx context.Context, id int64) (err error) {
 
 	return
 }
+
+func (u *postRepository) GetByAuthor(ctx context.Context, author string) (result models.Post, err error) {
+
+	return
+}

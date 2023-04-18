@@ -36,12 +36,23 @@ func TestAddPost(t *testing.T) {
 			expectedError: models.ErrPostTitleEmpty,
 		},
 		{
-			name:      "error add post",
+			name:      "author empty",
 			wantError: true,
 			input: models.Post{
 				Title:    "this is title",
 				Content:  "",
 				Author:   "",
+				PostedAt: time.Now(),
+			},
+			expectedError: errors.New("post author is empty"),
+		},
+		{
+			name:      "error add post",
+			wantError: true,
+			input: models.Post{
+				Title:    "this is title",
+				Content:  "",
+				Author:   "admin",
 				PostedAt: time.Now(),
 			},
 			expectedError: errors.New("this is an unexpected error"),
@@ -55,7 +66,7 @@ func TestAddPost(t *testing.T) {
 			input: models.Post{
 				Title:    "this is title",
 				Content:  "",
-				Author:   "",
+				Author:   "admin",
 				PostedAt: time.Now(),
 			},
 			mockFunc: func(postMock *mocks.MockPostRepository) {
@@ -73,7 +84,6 @@ func TestAddPost(t *testing.T) {
 			postRepo := mocks.NewMockPostRepository(mockCtrl)
 			postUsecase := usecase.NewPostUsecase(postRepo)
 
-			// Run flow mock
 			if tc.mockFunc != nil {
 				tc.mockFunc(postRepo)
 			}
@@ -177,4 +187,10 @@ func TestUpdatePost(t *testing.T) {
 
 func TestDeletePost(t *testing.T) {
 	// TODO: implement me
+}
+
+func TestGetByAuthor(t *testing.T) {
+	// test table
+
+	// loop per test case
 }

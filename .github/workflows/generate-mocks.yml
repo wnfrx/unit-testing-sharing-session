@@ -5,7 +5,10 @@ on:
         branches:
             - feature/**
             - enhance/**
+            - github-action
         paths:
+            - '.github/*'
+            - '.github/**/*'
             - '2-clean-architecture/service/usecase.go'
             - '2-clean-architecture/service/repository.go'
             - '2-clean-architecture/service/usecase/mocks/*.go'
@@ -20,6 +23,8 @@ on:
             - staging
             - temp/**
         paths:
+            - '.github/*'
+            - '.github/**/*'
             - '2-clean-architecture/service/usecase.go'
             - '2-clean-architecture/service/repository.go'
             - '2-clean-architecture/service/usecase/mocks/*.go'

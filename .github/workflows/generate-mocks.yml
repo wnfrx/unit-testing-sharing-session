@@ -81,6 +81,7 @@ jobs:
             - name: Go generate
               id: go-generate
               run: |
+                cd 2-clean-architecture
                 go generate ./...
 
             - name: Push changes

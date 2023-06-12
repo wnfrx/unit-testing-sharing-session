@@ -78,6 +78,11 @@ jobs:
                     echo ::set-output name=is-changed::true
                 fi
 
+            - name: Go generate
+              id: go-generate
+              run: |
+                go generate ./...
+
             - name: Push changes
               if: steps.generate-mocks.outputs.is-changed != 'false'
               uses: ad-m/github-push-action@master

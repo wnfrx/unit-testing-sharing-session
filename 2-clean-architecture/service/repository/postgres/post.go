@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/jmoiron/sqlx"
 
@@ -18,6 +19,7 @@ func NewPostRepository(db *sqlx.DB) service.PostRepository {
 }
 
 func (u *postRepository) Add(ctx context.Context, args models.Post) (id int64, err error) {
+	fmt.Println("test add")
 
 	return
 }

@@ -1,4 +1,4 @@
-name: Generate Mocks
+name: Unit Testing
 
 on:
     push:
@@ -83,6 +83,12 @@ jobs:
               run: |
                 cd 2-clean-architecture
                 go generate ./...
+
+            - name: Run unit tests
+              id: run-unit-tests
+              run: |
+                cd 2-clean-architecture
+                go test ./...
 
             - name: Push changes
               if: steps.generate-mocks.outputs.is-changed != 'false'
